@@ -8,6 +8,7 @@ from homework1.locators import paths
 
 
 class TestAuthorization(BaseCase):
+    @pytest.mark.ui
     def test_log_in_with_correct_data(self):
         """
         Тест проверяет правильность входа в учетную запись пользователя при вводе корректных данных.
@@ -23,7 +24,7 @@ class TestAuthorization(BaseCase):
             paths.BUTTON_LOGIN, "title", "Кампании"
         )
         assert result == True, "Авторизация прошла безуспешно"
-
+    @pytest.mark.ui
     def test_log_out(self):
         """
         Тест проверяет правильность выхода из учетной записи.
@@ -36,7 +37,7 @@ class TestAuthorization(BaseCase):
         self.find(paths.LOGOUT).click()
         result = self.expected_conditions_element(paths.BUTTON_LOGIN, "clickable").text
         assert result == "Войти", "Выход из аккаунта прошел безуспешно"
-
+    @pytest.mark.ui
     def test_log_in_with_incorrect_login(self):
         """
         Тест проверяет процесс входа в учетную запись при вводе неправильного логина.
@@ -54,7 +55,7 @@ class TestAuthorization(BaseCase):
             paths.ERROR_PASSWORD_OR_LOGIN, "located"
         ).text
         assert result == "Error"
-
+    @pytest.mark.ui
     def test_log_in_with_incorrect_password(self):
         """
         Тест проверяет процесс входа в учетную запись при вводе неправильного пароля.
@@ -70,7 +71,7 @@ class TestAuthorization(BaseCase):
             paths.ERROR_PASSWORD_OR_LOGIN, "located"
         ).text
         assert result == "Error"
-
+    @pytest.mark.ui
     def test_edit_profile_information(self):
         """
         Тест проверяет корректность редактирования контактной информации пользователя.
@@ -87,6 +88,7 @@ class TestAuthorization(BaseCase):
         ).text
         assert result == (DATA.get("name")).upper()
 
+    @pytest.mark.ui
     @pytest.mark.parametrize(
         "path,check",
         zip(
