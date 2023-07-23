@@ -2,8 +2,9 @@ import pytest
 
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
-
-
+from russian_names import RussianNames
+from random import randint
+from phone_gen import PhoneNumber
 class BaseCase:
     @pytest.fixture(scope="function", autouse=True)
     def init_auto_webdriver(self, init_webdriver):
@@ -26,7 +27,7 @@ class BaseCase:
                 expected_conditions.title_is(text)
             )
         if what == "located":
-            return WebDriverWait(self.driver, 10, poll_frequency=0.1).until(
+            return WebDriverWait(self.driver, 12, poll_frequency=0.1).until(
                 expected_conditions.presence_of_element_located(path))
 
     def find(self, path: tuple):
@@ -36,3 +37,12 @@ class BaseCase:
         element = self.find(path)
         element.clear()
         element.send_keys(text)
+
+    def generate_data(self):
+         data = {}
+         data["name"] = RussianNames().get_person()
+         data["phone"] = PhoneNumber("Russia").get_number()
+         data["Inn"] = randint(1000000000,500000000000)
+         return data
+
+
