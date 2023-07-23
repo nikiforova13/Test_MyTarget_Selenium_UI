@@ -2,3 +2,5 @@ pytest
 selenium
 webdriver-manager
 black
+russian-names
+phone_gen
