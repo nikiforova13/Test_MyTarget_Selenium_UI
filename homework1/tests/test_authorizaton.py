@@ -4,125 +4,71 @@ import pytest
 
 from homework1.base.base_case import BaseCase
 from homework1.consts import constants
-from homework1.locators import paths
+from homework1.locators.paths import ButtonForInputData, ButtonForNavigatingPages, Check, ButtonForAuthorization, ButtonForSavingChanges
 
 
+@pytest.mark.ui
 class TestAuthorization(BaseCase):
-    @pytest.mark.ui
     def test_log_in_with_correct_data(self):
         """
-        Тест проверяет правильность входа в учетную запись пользователя при вводе корректных данных.
+        Тест проверяет, что при вводе корректных данных осуществляется вход в учетную запись пользователя.
         :return:
         """
-        self.expected_conditions_element(paths.BUTTON_LOGIN, "clickable").click()
-        self.find_element_and_send_text(paths.INPUT_EMAIL, constants.NUMBER_FOR_LOGIN)
+        self.expected_conditions_element(ButtonForAuthorization.BUTTON_LOGIN, "clickable").click()
+        self.find_element_and_send_text(ButtonForInputData.INPUT_EMAIL, constants.NUMBER_FOR_LOGIN)
         self.find_element_and_send_text(
-            paths.INPUT_PASSWORD, constants.PASSWORD_FOR_LOGIN
+            ButtonForInputData.INPUT_PASSWORD, constants.PASSWORD_FOR_LOGIN
         )
-        self.find(paths.BUTTON_LOGIN_AFTER_INPUT_DATA).click()
+        self.find(ButtonForAuthorization.BUTTON_LOGIN_AFTER_INPUT_DATA).click()
         result = self.expected_conditions_element(
-            paths.BUTTON_LOGIN, "title", "Кампании"
+            ButtonForAuthorization.BUTTON_LOGIN, "title", "Кампании"
         )
-        assert result == True, "Авторизация прошла безуспешно"
-    @pytest.mark.ui
+        assert result == True
+
     def test_log_out(self):
         """
-        Тест проверяет правильность выхода из учетной записи.
+        Тест проверяет, что при нажатии кнопки "Выход", происходит выход из учетной записи пользователя.
         :return:
         """
         self.test_log_in_with_correct_data()
-        self.find(paths.BUTTON_LOGOUT).click()
+        self.find(ButtonForAuthorization.BUTTON_PROFILE).click()
         time.sleep(3)
         # TODO result = WebDriverWait(self.driver, 10, poll_frequency=0.1).until(expected_conditions.element_located_to_be_selected(paths.LOGOUT)).click()
-        self.find(paths.LOGOUT).click()
-        result = self.expected_conditions_element(paths.BUTTON_LOGIN, "clickable").text
-        assert result == "Войти", "Выход из аккаунта прошел безуспешно"
-    @pytest.mark.ui
+        self.find(ButtonForAuthorization.BUTTON_LOGOUT).click()
+        result = self.expected_conditions_element(ButtonForAuthorization.BUTTON_LOGIN, "clickable").text
+        assert result == "Войти"
     def test_log_in_with_incorrect_login(self):
         """
-        Тест проверяет процесс входа в учетную запись при вводе неправильного логина.
+        Тест проверяет, что при вводе неправильного логина, вход в учетную запись пользователя не осуществляется.
         :return:
         """
-        self.expected_conditions_element(paths.BUTTON_LOGIN, "clickable").click()
+        self.expected_conditions_element(ButtonForAuthorization.BUTTON_LOGIN, "clickable").click()
         self.find_element_and_send_text(
-            paths.INPUT_EMAIL, constants.NUMBER_FOR_INCORRECT_LOGIN
+            ButtonForInputData.INPUT_EMAIL, constants.INVALID_NUMBER
         )
         self.find_element_and_send_text(
-            paths.INPUT_PASSWORD, constants.PASSWORD_FOR_LOGIN
+            ButtonForInputData.INPUT_PASSWORD, constants.PASSWORD_FOR_LOGIN
         )
-        self.find(paths.BUTTON_LOGIN_AFTER_INPUT_DATA).click()
+        self.find(ButtonForAuthorization.BUTTON_LOGIN_AFTER_INPUT_DATA).click()
         result = self.expected_conditions_element(
-            paths.ERROR_PASSWORD_OR_LOGIN, "located"
+            Check.ERROR_LOGIN_WITH_INVALID_DATA, "located"
         ).text
         assert result == "Error"
-    @pytest.mark.ui
     def test_log_in_with_incorrect_password(self):
         """
-        Тест проверяет процесс входа в учетную запись при вводе неправильного пароля.
+        Тест проверяет, что при вводе неправильного пароля, вход в учетную запись пользователя не происходит.
         :return:
         """
-        self.expected_conditions_element(paths.BUTTON_LOGIN, "clickable").click()
-        self.find_element_and_send_text(paths.INPUT_EMAIL, constants.NUMBER_FOR_LOGIN)
+        self.expected_conditions_element(ButtonForAuthorization.BUTTON_LOGIN, "clickable").click()
+        self.find_element_and_send_text(ButtonForInputData.INPUT_EMAIL, constants.NUMBER_FOR_LOGIN)
         self.find_element_and_send_text(
-            paths.INPUT_PASSWORD, constants.PASSWORD_FOR_INCORRECT_LOGIN
+            ButtonForInputData.INPUT_PASSWORD, constants.INVALID_PASSWORD
         )
-        self.find(paths.BUTTON_LOGIN_AFTER_INPUT_DATA).click()
+        self.find(ButtonForAuthorization.BUTTON_LOGIN_AFTER_INPUT_DATA).click()
         result = self.expected_conditions_element(
-            paths.ERROR_PASSWORD_OR_LOGIN, "located"
+            Check.ERROR_LOGIN_WITH_INVALID_DATA, "located"
         ).text
         assert result == "Error"
-    @pytest.mark.ui
-    def test_edit_profile_information(self):
-        """
-        Тест проверяет корректность редактирования контактной информации пользователя.
-        :return:
-        """
-        DATA = self.generate_data()
-        self.test_log_in_with_correct_data()
-        self.find(paths.BUTTON_PROFILE).click()
-        self.find_element_and_send_text(paths.INPUT_NAME, DATA.get("name"))
-        self.find(paths.SAVE_CHANGE).click()
-        self.driver.refresh()
-        result = self.expected_conditions_element(
-            paths.GET_CURRENT_NAME, "located"
-        ).text
-        assert result == (DATA.get("name")).upper()
 
-    @pytest.mark.ui
-    @pytest.mark.parametrize(
-        "path,check",
-        zip(
-            [
-                paths.BUTTON_AUDIENCES,
-                paths.BUTTON_BALANCE,
-                paths.BUTTON_STATISTICS,
-                paths.BUTTON_PROFILE,
-                paths.BUTTON_TOOLS,
-            ],
-            [
-                paths.CHECK_AUDIENCES,
-                paths.CHECK_BALANCE,
-                paths.CHECK_STATISTICS,
-                paths.CHECK_PROFILE,
-                paths.CHECK_TOOLS,
-            ],
-        ),
-        ids=[
-            "check button audiences",
-            "check button balanca",
-            "check button statistics",
-            "check button profile",
-            "check button tools",
-        ],
-    )
-    def test_go_to_portal_pages(self, path, check):
-        """
-        Тест переходит по страницам портала и проверяет, что переход на страницу осуществлен.
-        :param path:
-        :param check:
-        :return:
-        """
-        self.test_log_in_with_correct_data()
-        self.find(path).click()
-        result = self.expected_conditions_element(check, "located")
-        assert result
+
+
