@@ -1,7 +1,9 @@
 from homework1.locators.paths import ButtonForNavigatingPages, Check
 import pytest
 from homework1.base.base_case import BaseCase
-from homework1.tests.test_authorizaton import TestAuthorization
+
+
+@pytest.mark.ui
 class TestsPortalPages(BaseCase):
     @pytest.mark.parametrize(
         "path,check",
@@ -29,14 +31,13 @@ class TestsPortalPages(BaseCase):
             "checking the transition to the tools page",
         ],
     )
-    def test_go_to_portal_pages(self, path, check):
+    def test_go_to_portal_pages(self, path, check, authorization):
         """
         Тест переходит по страницам портала и проверяет, что переход на соответствующую страницу осуществлен.
         :param path:
         :param check:
         :return:
         """
-        # self.test_log_in_with_correct_data()
-        self.find(path).click()
+        self.expected_conditions_element(path, "clickable").click()
         result = self.expected_conditions_element(check, "located")
         assert result

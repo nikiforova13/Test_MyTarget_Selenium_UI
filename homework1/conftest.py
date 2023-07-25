@@ -4,6 +4,7 @@ from homework1.consts.constants import URL
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
+
 @pytest.fixture(scope="function")
 def init_webdriver():
     """
@@ -15,4 +16,3 @@ def init_webdriver():
     driver.maximize_window()
     yield driver
     driver.quit()
-
