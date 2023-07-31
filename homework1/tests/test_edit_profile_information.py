@@ -2,11 +2,11 @@ from homework1.locators.paths import (
     ButtonForNavigatingPages,
     ButtonForSavingChanges,
     Check,
-    ButtonForInputData,
+    FieldsForInputData,
 )
 from homework1.base.base_case import BaseCase
 import pytest
-
+from homework1.helpers.utils import generate_data
 
 @pytest.mark.ui
 class TestEditProfileInformation(BaseCase):
@@ -18,8 +18,8 @@ class TestEditProfileInformation(BaseCase):
         DATA = self.generate_data()
         self.expected_conditions_element(
             ButtonForNavigatingPages.BUTTON_PROFILE, "clickable"
-        ).click()
-        self.find_element_and_send_text(ButtonForInputData.INPUT_NAME, DATA.get("name"))
+        )
+        self.find_element_and_send_text(FieldsForInputData.INPUT_NAME_FIELD, DATA.get("name"))
         self.find(ButtonForSavingChanges.SAVE_CHANGE).click()
         self.driver.refresh()
         result = self.expected_conditions_element(

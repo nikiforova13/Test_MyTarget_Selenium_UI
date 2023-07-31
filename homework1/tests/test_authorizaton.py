@@ -2,7 +2,7 @@ import pytest
 
 from homework1.base.base_case import BaseCase
 from homework1.consts import constants
-from homework1.locators.paths import ButtonForInputData, Check, ButtonForAuthorization
+from homework1.locators.paths import FieldsForInputData, Check, ButtonForAuthorization
 
 
 @pytest.mark.ui
@@ -14,12 +14,12 @@ class TestAuthorization(BaseCase):
         """
         self.expected_conditions_element(
             ButtonForAuthorization.BUTTON_LOGIN, "clickable"
-        ).click()
-        self.find_element_and_send_text(
-            ButtonForInputData.INPUT_EMAIL, constants.NUMBER_FOR_LOGIN
         )
         self.find_element_and_send_text(
-            ButtonForInputData.INPUT_PASSWORD, constants.PASSWORD_FOR_LOGIN
+            FieldsForInputData.INPUT_EMAIL_FIELD, constants.NUMBER_FOR_LOGIN
+        )
+        self.find_element_and_send_text(
+            FieldsForInputData.INPUT_PASSWORD_FIELD, constants.PASSWORD_FOR_LOGIN
         )
         self.find(ButtonForAuthorization.BUTTON_LOGIN_AFTER_INPUT_DATA).click()
         result = self.expected_conditions_element(
@@ -29,22 +29,22 @@ class TestAuthorization(BaseCase):
 
     def test_log_in_with_incorrect_login(self):
         """
-        Тест проверяет, что при вводе неправильного логина, вход в учетную запись пользователя не осуществляется.
+        Тест проверяет, что при вводе невалидного логина, вход в учетную запись пользователя не осуществляется.
         :return:
         """
         self.expected_conditions_element(
             ButtonForAuthorization.BUTTON_LOGIN, "clickable"
-        ).click()
-        self.find_element_and_send_text(
-            ButtonForInputData.INPUT_EMAIL, constants.INVALID_NUMBER
         )
         self.find_element_and_send_text(
-            ButtonForInputData.INPUT_PASSWORD, constants.PASSWORD_FOR_LOGIN
+            FieldsForInputData.INPUT_EMAIL_FIELD, constants.INVALID_NUMBER
+        )
+        self.find_element_and_send_text(
+            FieldsForInputData.INPUT_PASSWORD_FIELD, constants.PASSWORD_FOR_LOGIN
         )
         self.find(ButtonForAuthorization.BUTTON_LOGIN_AFTER_INPUT_DATA).click()
         result = self.expected_conditions_element(
             Check.ERROR_LOGIN_WITH_INVALID_DATA, "located"
-        ).text
+        )
         assert result
 
     def test_log_in_with_incorrect_password(self):
@@ -54,15 +54,15 @@ class TestAuthorization(BaseCase):
         """
         self.expected_conditions_element(
             ButtonForAuthorization.BUTTON_LOGIN, "clickable"
-        ).click()
-        self.find_element_and_send_text(
-            ButtonForInputData.INPUT_EMAIL, constants.NUMBER_FOR_LOGIN
         )
         self.find_element_and_send_text(
-            ButtonForInputData.INPUT_PASSWORD, constants.INVALID_PASSWORD
+            FieldsForInputData.INPUT_EMAIL_FIELD, constants.NUMBER_FOR_LOGIN
+        )
+        self.find_element_and_send_text(
+            FieldsForInputData.INPUT_PASSWORD_FIELD, constants.INVALID_PASSWORD
         )
         self.find(ButtonForAuthorization.BUTTON_LOGIN_AFTER_INPUT_DATA).click()
         result = self.expected_conditions_element(
             Check.ERROR_LOGIN_WITH_INVALID_DATA, "located"
-        ).text
+        )
         assert result

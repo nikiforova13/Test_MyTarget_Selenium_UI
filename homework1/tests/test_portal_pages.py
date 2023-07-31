@@ -38,6 +38,6 @@ class TestsPortalPages(BaseCase):
         :param check:
         :return:
         """
-        self.expected_conditions_element(path, "clickable").click()
+        self.expected_conditions_element(path, "clickable")
         result = self.expected_conditions_element(check, "located")
         assert result

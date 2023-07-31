@@ -8,18 +8,18 @@ class ButtonForAuthorization:
     BUTTON_LOGOUT = (By.CSS_SELECTOR, "[href='/logout']")
 
 
-class ButtonForInputData:
-    INPUT_EMAIL = (By.NAME, "email")
-    INPUT_PASSWORD = (By.NAME, "password")
-    INPUT_NAME = (By.CSS_SELECTOR, "[data-name*='fio'] input")
-    INPUT_INN = (By.CSS_SELECTOR, "[data-name*='Inn'] input")
-    INPUT_PHONE = (By.CSS_SELECTOR, "[data-name*='phone'] input")
+class FieldsForInputData:
+    INPUT_EMAIL_FIELD = (By.NAME, "email")
+    INPUT_PASSWORD_FIELD = (By.NAME, "password")
+    INPUT_NAME_FIELD = (By.CSS_SELECTOR, "[data-name*='fio'] input")
+    INPUT_INN_FIELD = (By.CSS_SELECTOR, "[data-name*='Inn'] input")
+    INPUT_PHONE_FIELD = (By.CSS_SELECTOR, "[data-name*='phone'] input")
 
 
 class ButtonForNavigatingPages:
     BUTTON_AUDIENCES = (
         By.CSS_SELECTOR,
-        "[class*='center-module-button-14O4yB center-module-segments']",
+        "[class*='center-module-button- center-module-segments']",
     )
     BUTTON_BALANCE = (By.CSS_SELECTOR, "[class*='center-module-billing']")
     BUTTON_STATISTICS = (By.CSS_SELECTOR, "[class*='center-module-statistics']")

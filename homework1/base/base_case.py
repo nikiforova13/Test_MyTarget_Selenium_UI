@@ -2,10 +2,7 @@ import pytest
 
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
-from russian_names import RussianNames
-from random import randint
-from phone_gen import PhoneNumber
-from homework1.locators.paths import ButtonForInputData, ButtonForAuthorization
+from homework1.locators.paths import FieldsForInputData, ButtonForAuthorization
 from homework1.consts import constants
 
 
@@ -23,9 +20,9 @@ class BaseCase:
         self, path: tuple, what: str, text: str | None = None
     ):
         if what == "clickable":
-            return WebDriverWait(self.driver, 10, poll_frequency=0.1).until(
+            WebDriverWait(self.driver, 10, poll_frequency=0.1).until(
                 expected_conditions.element_to_be_clickable(path)
-            )
+            ).click()
         if what == "title":
             return WebDriverWait(self.driver, 10, poll_frequency=0.1).until(
                 expected_conditions.title_is(text)
@@ -34,6 +31,8 @@ class BaseCase:
             return WebDriverWait(self.driver, 12, poll_frequency=0.1).until(
                 expected_conditions.presence_of_element_located(path)
             )
+        if what == "visibility":
+            return WebDriverWait(self.driver, 12, poll_frequency=0.1).until(expected_conditions.visibility_of_element_located(path))
 
     def find(self, path: tuple):
         return self.driver.find_element(*path)
@@ -47,18 +46,13 @@ class BaseCase:
     def authorization(self):
         self.expected_conditions_element(
             ButtonForAuthorization.BUTTON_LOGIN, "clickable"
-        ).click()
-        self.find_element_and_send_text(
-            ButtonForInputData.INPUT_EMAIL, constants.NUMBER_FOR_LOGIN
         )
         self.find_element_and_send_text(
-            ButtonForInputData.INPUT_PASSWORD, constants.PASSWORD_FOR_LOGIN
+            FieldsForInputData.INPUT_EMAIL_FIELD, constants.NUMBER_FOR_LOGIN
+        )
+        self.find_element_and_send_text(
+            FieldsForInputData.INPUT_PASSWORD_FIELD, constants.PASSWORD_FOR_LOGIN
         )
         self.find(ButtonForAuthorization.BUTTON_LOGIN_AFTER_INPUT_DATA).click()
 
-    def generate_data(self):
-        data = {}
-        data["name"] = RussianNames().get_person()
-        data["phone"] = PhoneNumber("Russia").get_number()
-        data["Inn"] = randint(1000000000, 500000000000)
-        return data
+
