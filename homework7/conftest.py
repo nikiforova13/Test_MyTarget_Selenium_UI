@@ -99,9 +99,9 @@ def pytest_configure(config):
         # config.mock_proc = mock_proc
         # wait_ready(settings.MOCK_HOST, settings.MOCK_PORT)
 
-        from mock import flask_mock
-        flask_mock.run_mock()
-        wait_ready(settings.MOCK_HOST, settings.MOCK_PORT)
+        # from mock import flask_mock
+        # flask_mock.run_mock()
+        # wait_ready(settings.MOCK_HOST, settings.MOCK_PORT)
 
 
 def pytest_unconfigure(config):
@@ -132,5 +132,5 @@ def pytest_unconfigure(config):
     # config.mock_stdout.close()
     # assert exit_code == 1
 
-    requests.get(f'http://{settings.MOCK_HOST}:{settings.MOCK_PORT}/shutdown')
+    # requests.get(f'http://{settings.MOCK_HOST}:{settings.MOCK_PORT}/shutdown')
 

@@ -22,13 +22,13 @@ async def root():
     return {'message': 'Hello, my friend'}
 
 
-@app.get('/items/{item_id}')
+@app.get('/your_id/{item_id}')
 async def show_item(item_id: int):
-    return {"item_id": item_id}
+    return {"your_id": item_id}
 
 
 # query параметр, запрос имеет вид: "http://127.0.0.1:8000/items1/&skip=0&limit=10"
-@app.get('/items1/')
+@app.get('/your_age/')
 async def read_item(skip: int = 0, limit: Optional[int] = 10):
     return fake_items_db[skip: skip + limit]
 
